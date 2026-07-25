@@ -1,7 +1,6 @@
 from pathlib import Path
 import numpy as np
 from PIL import Image
-from contourpy.util import data
 
 
 class Dalaloader:
@@ -19,24 +18,26 @@ class Dalaloader:
 
         dataset_struct = []
 
-        for i in range(1, num_folders+1):
+        for i in range(0, num_folders + 1):
             folder_path = self.base_path/str(i)
 
             if not(folder_path.exists()):
                 print(f"Folder not found {folder_path}")
                 continue
 
-        images_list = []
+            images_list = []
 
-        for file_path in folder_path.iterdir():
-            if file_path.suffix.lower() in self.extensions:
-                try:
-                    img = Image.open(file_path)
-                    img_arr = np.array(img)
-                    images_list.append(img_arr)
-                except Exception as e:
-                    print(f"Error loading {file_path}:{e}")
+            for file_path in folder_path.iterdir():
+                if file_path.suffix.lower() in self.extensions:
+                    try:
+                        img = Image.open(file_path)
+                        img_arr = np.array(img)
+                        images_list.append(img_arr)
+                    except Exception as e:
+                        print(f"Error loading {file_path}:{e}")
 
             dataset_struct.append({"label":str(i) , "images":images_list})
+            # Lop ends
+
 
         return dataset_struct

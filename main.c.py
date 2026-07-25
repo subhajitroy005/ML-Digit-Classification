@@ -1,30 +1,50 @@
 import matplotlib.pyplot as plot
-from PIL import Image
 
 from preprocessing.data_load import Dalaloader
-
+from preprocessing.data_processing import DataProcessing
 
 
 
 
 def main():
-    """ Load the data """
-    print("--- Step 1: Data loading ---")
-    Loader = Dalaloader(data_path="./dataset")
-    collected_data = Loader.collect_from_folder(num_folders=9)
-    print(f"Loaded {len(collected_data)} images")
+    """
+        Load the data from the dataset
+    """
+    print("Step 1: Data loading ---")
+    loader = Dalaloader(data_path="./dataset")
+    collected_data = loader.collect_from_folder(num_folders=9)
 
-    image_arr = collected_data[0]["images"][0]
-    label = collected_data[0]["label"][0]
 
-    image = Image.fromarray(image_arr)
+    """ 
+        Preprocessing all the data/images
+    """
+    print("Step 2: Data Preprocessing ---")
+    preprocessor = DataProcessing()
 
-    print(collected_data[0]["images"][0].shape)
+    for folders in collected_data:
+        label       = folders["label"]
+        images_list = folders["images"]
 
-    plot.imshow(image)
-    plot.title(label)
-    plot.axis('off')
-    plot.show()
+        print(f"Dataset Label: {label}")
+
+        for image_idx, image in enumerate(images_list):
+            gray_img = preprocessor.img_convert_to_greyscale(image)
+            images_list[image_idx] = gray_img
+
+
+
+
+
+    for images in collected_data:
+
+        lable = images["label"]
+        images = images["images"]
+
+        for idx, image in enumerate(images):
+            if (idx == 0):
+                print(f"Shape: {image[0,0]}")
+                plot.imshow(image,cmap="gray")
+                plot.show()
 
 
 if __name__ == "__main__":
