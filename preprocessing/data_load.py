@@ -37,7 +37,29 @@ class Dalaloader:
                         print(f"Error loading {file_path}:{e}")
 
             dataset_struct.append({"label":str(i) , "images":images_list})
-            # Lop ends
-
+            # Loop ends
 
         return dataset_struct
+
+    """ Create the trainable dataset list """
+    def image_set_creation(self, dataset_struct):
+        x = []
+        for folders in dataset_struct:
+            for images in folders["images"]:
+                x.append(images)
+
+        x = np.array(x, dtype="float32")
+        return x
+
+    def label_set_creation(self, dataset_struct):
+        y = []
+        for folders in dataset_struct:
+            label = folders["label"]
+            for images in folders["images"]:
+                y.append(label)
+
+        y = np.array(y, dtype="int32")
+        return y
+
+
+

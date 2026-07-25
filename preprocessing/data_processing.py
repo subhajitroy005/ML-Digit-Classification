@@ -20,3 +20,9 @@ class DataProcessing:
         grayscale_image = pil_image.convert('L')
 
         return np.array(grayscale_image)
+
+    """ Image normalization """
+    def img_normalize(self,image):
+        image = image.astype(np.float32) / 255.0
+        image = np.expand_dims(image, axis=-1)
+        return image
